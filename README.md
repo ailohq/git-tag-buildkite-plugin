@@ -13,8 +13,8 @@ With no options, tags the `$BUILDKITE_BRANCH` and pushes the tags, with a commit
 steps:
   - command: make
     plugins:
-      - tendnz/git-tag#v1.0.7:
-          version: "v1.0.0-prod" 
+      - ailohq/git-tag#v1.0.11:
+          version: "v1.0.0-prod"
 ```
 
 With all options customized:
@@ -23,11 +23,11 @@ With all options customized:
 steps:
   - command: make
     plugins:
-      - tendnz/git-tag#v1.0.7:
+      - ailohq/git-tag#v1.0.11:
           version: "v1.0.0-prod"
           message: "Release to $ENV [$BUILDKITE_BUILD_NUMBER]"
           githubtoken_env: GITHUB_TOKEN
-          reponame: tendnz/my-repo-name
+          reponame: ailohq/my-repo-name
           prerelease: true
           user:
             - name: Bob Monkey
@@ -38,40 +38,39 @@ steps:
 
 - **version** (required))
 
-    A tag to use in `git tag $VERSION`
+  A tag to use in `git tag $VERSION`
 
 - **message** (optional, defaults to `$BUILDKITE_ORGANIZATION_SLUG/$BUILDKITE_PIPELINE_SLUG: Build $BUILDKITE_BUILD_NUMBER for $BUILDKITE_BRANCH"`)
 
-    The commit message
+  The commit message
 
 - **githubtoken_env** (optional, required to enable releases)
 
-    If provided, this will attempt to make a release. Load your token into your ENV (as per all secrets) then use 
+  If provided, this will attempt to make a release. Load your token into your ENV (as per all secrets) then use
 
-    ```
-      githubtoken: YOUR_ENV_NAME
-    ```
+  ```
+    githubtoken: YOUR_ENV_NAME
+  ```
 
 - **reponame** (optional, but required if you want releases)
 
-    The name of the repo, eg tendnz/my-reop-name
+  The name of the repo, eg ailohq/my-reop-name
 
 - **prerelease** (optional, defaults to `false`)
 
-    Mark this as a prerelease or not.
+  Mark this as a prerelease or not.
 
 - **draft** (optional, defaults to `false`)
 
-    Mark this as a draft or not.
+  Mark this as a draft or not.
 
 - **user.email** (optional)
 
-    If given, will configure the git user email for the repo.
+  If given, will configure the git user email for the repo.
 
 - **user.name** (optional)
 
-    If given, will configure the git user name for the repo.
-
+  If given, will configure the git user name for the repo.
 
 ## Tests / Linting
 

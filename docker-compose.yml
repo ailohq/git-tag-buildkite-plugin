@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 services:
   tests:
     image: buildkite/plugin-tester
@@ -6,6 +6,6 @@ services:
       - ".:/plugin:ro"
   lint:
     image: buildkite/plugin-linter
-    command: ['--id', 'tendnz/git-tag']
+    command: ["--id", "ailohq/git-tag"]
     volumes:
       - ".:/plugin:ro"

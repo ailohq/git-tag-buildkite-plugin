@@ -6,7 +6,7 @@ steps:
   - label: ":sparkles: Lint"
     plugins:
       plugin-linter#v2.0.0:
-        id: tendnz/git-tag
+        id: ailohq/git-tag
   - label: ":shell: Shellcheck"
     plugins:
       shellcheck#v1.0.1:
