@@ -8,15 +8,17 @@ then
   exit 0
 fi
 
+TOKEN=${BUILDKITE_PLUGIN_GIT_TAG_GITHUBTOKEN:-$(printenv ${BUILDKITE_PLUGIN_GIT_TAG_GITHUBTOKEN_ENV:-"GITHUB_TOKEN"} || true)}
+REPO_ORG=$(basename $(dirname $BUILDKITE_REPO) | sed 's/git@github.com://')
+REPO_NAME=$(basename $BUILDKITE_REPO .git)
+REPO_SLUG=${BUILDKITE_PLUGIN_GIT_TAG_REPONAME:-"$REPO_ORG/$REPO_NAME"}
+
 branch=${BUILDKITE_PLUGIN_GIT_TAG_BRANCH:-${BUILDKITE_BRANCH}}
 message=${BUILDKITE_PLUGIN_GIT_TAG_MESSAGE:-"$BUILDKITE_ORGANIZATION_SLUG/$BUILDKITE_PIPELINE_SLUG: Build $BUILDKITE_BUILD_NUMBER for $BUILDKITE_BRANCH"}
 username=${BUILDKITE_PLUGIN_GIT_TAG_USER_1_NAME:-${BUILDKITE_BUILD_CREATOR}}
 email=${BUILDKITE_PLUGIN_GIT_TAG_USER_0_EMAIL:-${BUILDKITE_BUILD_CREATOR_EMAIL}}
 prerelease=${BUILDKITE_PLUGIN_GIT_TAG_PRERELEASE:-false}
 draft=${BUILDKITE_PLUGIN_GIT_TAG_DRAFT:-false}
-
-env
-
 
 echo "--- Setting username - ${username}"
 git config user.name "$username"
@@ -28,10 +30,7 @@ git tag "${BUILDKITE_PLUGIN_GIT_TAG_VERSION}" -m "${message}"
 git push --tags
 echo "--- Tags pushed"
 
-if [[ -n ${BUILDKITE_PLUGIN_GIT_TAG_GITHUBTOKEN+x} ]]; then
-  echo "--- Making a release"
-
-
+if [[ -n $TOKEN ]]; then
   generate_post_data()
   {
     cat <<EOF
@@ -45,7 +44,7 @@ if [[ -n ${BUILDKITE_PLUGIN_GIT_TAG_GITHUBTOKEN+x} ]]; then
 EOF
   }
 
-  echo "Create release $BUILDKITE_PLUGIN_GIT_TAG_VERSION for repo: $BUILDKITE_PLUGIN_GIT_TAG_REPONAME"
-  curl --data "$(generate_post_data)" -H "Authorization: token $BUILDKITE_PLUGIN_GIT_TAG_GITHUBTOKEN" "https://api.github.com/repos/$BUILDKITE_PLUGIN_GIT_TAG_REPONAME/releases"
+  echo "--- Creating release $BUILDKITE_PLUGIN_GIT_TAG_VERSION for repo $REPO_SLUG"
+  curl --data "$(generate_post_data)" -H "Authorization: token $TOKEN" "https://api.github.com/repos/$REPO_SLUG/releases"
 
 fi

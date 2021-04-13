@@ -26,7 +26,7 @@ steps:
       - tendnz/git-tag#v1.0.7:
           version: "v1.0.0-prod"
           message: "Release to $ENV [$BUILDKITE_BUILD_NUMBER]"
-          githubtoken: $MY_GITHUB_TOKEN
+          githubtoken_env: GITHUB_TOKEN
           reponame: tendnz/my-repo-name
           prerelease: true
           user:
@@ -44,15 +44,13 @@ steps:
 
     The commit message
 
-- **githubtoken** (optional, required to enable releases)
+- **githubtoken_env** (optional, required to enable releases)
 
     If provided, this will attempt to make a release. Load your token into your ENV (as per all secrets) then use 
 
     ```
-      githubtoken: $YOUR_ENV_NAME
+      githubtoken: YOUR_ENV_NAME
     ```
-
-    DONT put it into the YML!
 
 - **reponame** (optional, but required if you want releases)
 
