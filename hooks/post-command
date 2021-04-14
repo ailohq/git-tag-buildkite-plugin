@@ -20,15 +20,15 @@ email=${BUILDKITE_PLUGIN_GIT_TAG_USER_0_EMAIL:-${BUILDKITE_BUILD_CREATOR_EMAIL}}
 prerelease=${BUILDKITE_PLUGIN_GIT_TAG_PRERELEASE:-false}
 draft=${BUILDKITE_PLUGIN_GIT_TAG_DRAFT:-false}
 
-echo "--- Setting username - ${username}"
+echo "Setting git username: ${username}"
 git config user.name "$username"
-echo "--- Setting email - ${email}"
+echo "Setting git email: ${email}"
 git config user.email "$email"
 
-echo "--- Tagging with ${BUILDKITE_PLUGIN_GIT_TAG_VERSION}"
+echo "Creating git tag ${BUILDKITE_PLUGIN_GIT_TAG_VERSION}"
 git tag "${BUILDKITE_PLUGIN_GIT_TAG_VERSION}" -m "${message}"
 git push --tags
-echo "--- Tags pushed"
+echo "Git tag pushed"
 
 if [[ -n $TOKEN && $BUILDKITE_PLUGIN_GIT_TAG_RELEASE == "true" ]]; then
   generate_post_data()
@@ -44,6 +44,7 @@ if [[ -n $TOKEN && $BUILDKITE_PLUGIN_GIT_TAG_RELEASE == "true" ]]; then
 EOF
   }
 
-  echo "--- Creating release $BUILDKITE_PLUGIN_GIT_TAG_VERSION for repo $REPO_SLUG"
+  echo "Creating GitHub release $BUILDKITE_PLUGIN_GIT_TAG_VERSION for repo $REPO_SLUG"
   curl --data "$(generate_post_data)" -H "Authorization: token $TOKEN" "https://api.github.com/repos/$REPO_SLUG/releases"
+  echo "GitHub release created"
 fi
