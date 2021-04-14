@@ -28,6 +28,7 @@ steps:
           message: "Release to $ENV [$BUILDKITE_BUILD_NUMBER]"
           githubtoken_env: GITHUB_TOKEN
           reponame: ailohq/my-repo-name
+          release: true
           prerelease: true
           user:
             - name: Bob Monkey
@@ -55,6 +56,10 @@ steps:
 - **reponame** (optional, but required if you want releases)
 
   The name of the repo, eg ailohq/my-reop-name
+
+- **release** (optional, defaults to `true`)
+
+  Should a GitHub release be created?
 
 - **prerelease** (optional, defaults to `false`)
 

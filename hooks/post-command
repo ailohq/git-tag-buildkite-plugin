@@ -30,7 +30,7 @@ git tag "${BUILDKITE_PLUGIN_GIT_TAG_VERSION}" -m "${message}"
 git push --tags
 echo "--- Tags pushed"
 
-if [[ -n $TOKEN ]]; then
+if [[ -n $TOKEN && $BUILDKITE_PLUGIN_GIT_TAG_RELEASE == "true" ]]; then
   generate_post_data()
   {
     cat <<EOF
@@ -46,5 +46,4 @@ EOF
 
   echo "--- Creating release $BUILDKITE_PLUGIN_GIT_TAG_VERSION for repo $REPO_SLUG"
   curl --data "$(generate_post_data)" -H "Authorization: token $TOKEN" "https://api.github.com/repos/$REPO_SLUG/releases"
-
 fi
