@@ -21,7 +21,7 @@ load '/usr/local/lib/bats/load.bash'
     "log -1 : echo commit message" \
     "config user.name \"John Doe\" : echo stub" \
     "config user.email \"test@test.com\" : echo stub" \
-    "tag v1.0.123 : echo stub" \
+    "tag v1.0.123 -m \"Build $BUILDKITE_BUILD_NUMBER (branch: $BUILDKITE_BRANCH)\ncommit message\" : echo stub " \
     "push --tags : echo stub"
   stub curl
 
