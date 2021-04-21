@@ -13,7 +13,7 @@ With no options, tags the `$BUILDKITE_BRANCH` and pushes the tags, with a commit
 steps:
   - command: make
     plugins:
-      - ailohq/git-tag#v1.0.15:
+      - ailohq/git-tag#v1.0.16:
           version: "v1.0.0-prod"
 ```
 
@@ -23,7 +23,7 @@ With all options customized:
 steps:
   - command: make
     plugins:
-      - ailohq/git-tag#v1.0.15:
+      - ailohq/git-tag#v1.0.16:
           version: "v1.0.0-prod"
           message: "Release to $ENV [$BUILDKITE_BUILD_NUMBER]"
           githubtoken_env: GITHUB_TOKEN
