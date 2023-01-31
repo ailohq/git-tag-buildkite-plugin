@@ -13,6 +13,13 @@ REPO_ORG=$(basename $(dirname $BUILDKITE_REPO) | sed 's/git@github.com://')
 REPO_NAME=$(basename $BUILDKITE_REPO .git)
 REPO_SLUG=${BUILDKITE_PLUGIN_GIT_TAG_REPONAME:-"$REPO_ORG/$REPO_NAME"}
 
+if [[ ${BUILDKITE_SOURCE} == "schedule"]]
+then 
+  echo "Setting default user info for scheduled build"
+  BUILDKITE_BUILD_CREATOR="Buildkite"
+  BUILDKITE_BUILD_CREATOR_EMAIL="cron@ailo.io"
+fi
+
 branch=${BUILDKITE_PLUGIN_GIT_TAG_BRANCH:-${BUILDKITE_BRANCH}}
 message=${BUILDKITE_PLUGIN_GIT_TAG_MESSAGE:-"Build $BUILDKITE_BUILD_NUMBER (branch: $BUILDKITE_BRANCH)
 $(git log -1)"}
